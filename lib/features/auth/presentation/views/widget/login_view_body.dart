@@ -4,6 +4,10 @@ import 'package:ibm_task/features/auth/presentation/views/widget/custom_button.d
 import 'package:ibm_task/features/auth/presentation/views/widget/custom_social_media_row.dart';
 import 'package:ibm_task/features/auth/presentation/views/widget/custom_text_form_filed.dart';
 import 'package:ibm_task/features/auth/presentation/views/widget/app_logo.dart';
+import 'package:ibm_task/features/home/presentation/views/home_view.dart';
+import 'package:provider/provider.dart';
+
+import '../../manger/login_provider.dart';
 
 class LoginViewBody extends StatefulWidget {
   const LoginViewBody({super.key});
@@ -16,8 +20,30 @@ class _LoginViewBodyState extends State<LoginViewBody> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   var formKey = GlobalKey<FormState>();
+
+  void _login() async {
+    final email = emailController.text;
+    final password = passwordController.text;
+
+    try {
+      await Provider.of<AuthProvider>(context, listen: false)
+          .login(email, password);
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => HomeView(
+                text: email,
+              )));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Login failed: $e'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final loginProvider = Provider.of<AuthProvider>(context);
     return SafeArea(
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -99,10 +125,14 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * .06,
                 ),
-                CustomButton(
-                  onTap: () {},
-                  text: 'LOGIN',
-                ),
+                loginProvider.isLoading
+                    ? const CircularProgressIndicator()
+                    : CustomButton(
+                        onTap: () {
+                          _login();
+                        },
+                        text: 'LOGIN',
+                      ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * .06,
                 ),
