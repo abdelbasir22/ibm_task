@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ibm_task/features/groups/presentation/views/widgets/groups_view_body.dart';
 
 class GroupsView extends StatelessWidget {
   const GroupsView({
@@ -8,12 +9,7 @@ class GroupsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text(
-          "Groups page",
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-        ),
-      ),
+      body: GroupsViewBody(),
     );
   }
 }

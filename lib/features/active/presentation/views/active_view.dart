@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ibm_task/features/active/presentation/views/widgets/active_view_body.dart';
 
 class ActiveView extends StatelessWidget {
   const ActiveView({
@@ -8,12 +9,7 @@ class ActiveView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text(
-          "Active page",
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-        ),
-      ),
+      body: ActiveViewBody(),
     );
   }
 }

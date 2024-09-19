@@ -8,7 +8,7 @@ import 'package:ibm_task/features/messages/presentation/views/messages_view.dart
 import 'package:provider/provider.dart';
 
 import '../../../auth/presentation/manger/login_provider.dart';
-import '../../../messages/presentation/views/widgets/custom_search_bar.dart';
+import '../../../../core/widgets/custom_search_bar.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({
