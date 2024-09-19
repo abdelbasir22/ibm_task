@@ -28,7 +28,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
     try {
       await Provider.of<AuthProvider>(context, listen: false)
           .login(email, password);
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const HomeView(),
         ),
