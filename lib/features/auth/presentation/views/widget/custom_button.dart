@@ -16,23 +16,25 @@ class CustomButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        height: 60,
+        height: 50,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(32),
           gradient: const LinearGradient(
             colors: [
-              AppColors.darkGreen,
-              AppColors.green,
-              AppColors.liteGreen,
-              AppColors.lime,
-              AppColors.green,
+              AppColors.lightBlueGray,
+              AppColors.blueGray,
+              AppColors.purple,
+              AppColors.darkPurple,
             ],
           ),
         ),
         child: Center(
           child: Text(
             text,
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+            style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                color: AppColors.white),
           ),
         ),
       ),

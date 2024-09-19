@@ -9,41 +9,26 @@ class AppLogo extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 100,
+          width: 200,
           height: 50,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16),
-              bottomLeft: Radius.circular(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            gradient: const LinearGradient(
+              colors: [
+                AppColors.lightBlueGray,
+                AppColors.blueGray,
+                AppColors.purple,
+                AppColors.darkPurple,
+              ],
             ),
-            color: AppColors.darkGreen,
           ),
           child: const Center(
             child: Text(
-              'Chat',
+              'My App',
               style: TextStyle(
                 fontSize: 22,
-                color: AppColors.liteGreen,
-              ),
-            ),
-          ),
-        ),
-        Container(
-          width: 100,
-          height: 50,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(16),
-              bottomRight: Radius.circular(16),
-            ),
-            color: AppColors.green,
-          ),
-          child: const Center(
-            child: Text(
-              'App',
-              style: TextStyle(
-                fontSize: 22,
-                color: AppColors.lime,
+                fontWeight: FontWeight.w700,
+                color: AppColors.white,
               ),
             ),
           ),

@@ -28,14 +28,22 @@ class _LoginViewBodyState extends State<LoginViewBody> {
     try {
       await Provider.of<AuthProvider>(context, listen: false)
           .login(email, password);
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => HomeView(
-                text: email,
-              )));
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const HomeView(),
+        ),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Login failed: $e'),
+        const SnackBar(
+          backgroundColor: AppColors.purple,
+          content: Text(
+            'Login failed: wrong email or password',
+            style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: AppColors.white),
+          ),
         ),
       );
     }
@@ -66,8 +74,8 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                   height: 20,
                 ),
                 CustomTextFiled(
-                  lableText: 'Username',
-                  hintText: 'Type your username',
+                  lableText: 'Username or email',
+                  hintText: 'Type your username or email',
                   keyboardType: TextInputType.emailAddress,
                   icon: const Icon(
                     Icons.person_outline,
@@ -129,7 +137,9 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                     ? const CircularProgressIndicator()
                     : CustomButton(
                         onTap: () {
-                          _login();
+                          if (formKey.currentState!.validate()) {
+                            _login();
+                          }
                         },
                         text: 'LOGIN',
                       ),

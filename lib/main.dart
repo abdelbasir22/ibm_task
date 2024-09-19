@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:ibm_task/features/auth/presentation/manger/login_provider.dart';
 import 'package:ibm_task/features/auth/presentation/views/login_view.dart';
+import 'package:ibm_task/features/home/presentation/views/home_view.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,18 +20,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
-      ],
-      child: MaterialApp(
+    return Consumer<AuthProvider>(builder: (context, authProvider, child) {
+      return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const LoginView(),
-      ),
-    );
+        home: FutureBuilder(
+          future: authProvider.checkLoginStatus(),
+          builder: (context, snapshot) {
+            if (authProvider.isLoggedIn) {
+              return const HomeView();
+            } else {
+              return const LoginView();
+            }
+          },
+        ),
+      );
+    });
   }
 }
