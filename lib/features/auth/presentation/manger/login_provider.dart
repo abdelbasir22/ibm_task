@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ibm_task/features/auth/presentation/manger/api_service.dart';
+import 'package:ibm_task/features/auth/presentation/manger/login_api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/login_model.dart';
@@ -18,7 +18,7 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final result = await ApiService().login(email, password);
+      final result = await LoginApiService().login(email, password);
       _user = UserModel.fromJson(result);
       _isLoggedIn = true;
 

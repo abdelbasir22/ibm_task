@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:ibm_task/core/utils/app_url.dart';
 
-class ApiService {
+class LoginApiService {
   Future<Map<String, dynamic>> login(String email, String password) async {
     final url = Uri.parse(AppUrl.loginUrl);
     try {
