@@ -28,24 +28,28 @@ class _LoginViewBodyState extends State<LoginViewBody> {
     try {
       await Provider.of<AuthProvider>(context, listen: false)
           .login(email, password);
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const HomeView(),
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: AppColors.purple,
-          content: Text(
-            'Login failed: wrong email or password',
-            style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: AppColors.white),
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const HomeView(),
           ),
-        ),
-      );
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: AppColors.purple,
+            content: Text(
+              'Login failed: wrong email or password',
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.white),
+            ),
+          ),
+        );
+      }
     }
   }
 

@@ -11,9 +11,9 @@ class CustomSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: 45,
+        height: 40,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(40),
         ),
         child: Center(
           child: TextField(
@@ -33,7 +33,7 @@ class CustomSearchBar extends StatelessWidget {
                   borderSide:
                       const BorderSide(width: 1, color: AppColors.blueGray)),
               filled: true,
-              fillColor: AppColors.grey.withOpacity(.6),
+              fillColor: AppColors.grey.withOpacity(.3),
             ),
           ),
         ),

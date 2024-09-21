@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:ibm_task/features/messages/presentation/views/widgets/custom_messages_list_view.dart';
 import 'package:ibm_task/features/messages/presentation/views/widgets/expansion_tile_widget.dart';
+import 'package:provider/provider.dart';
+
+import '../../manger/messages_provider.dart';
 
 class MessagesViewBody extends StatelessWidget {
   const MessagesViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final messagesProvider = Provider.of<MessagesProvider>(context);
+    messagesProvider.fetchMessages();
+
     return const CustomScrollView(
       slivers: [
         SliverToBoxAdapter(

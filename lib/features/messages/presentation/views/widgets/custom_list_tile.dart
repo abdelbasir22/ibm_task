@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/models/messages_model/messages_model.dart';
+
 class CustomListTile extends StatelessWidget {
   const CustomListTile({
     super.key,
-    required this.title,
-    required this.subTitle,
-    required this.imageUrl,
-    required this.day,
+    required this.messages,
   });
 
-  final String title;
-  final String subTitle;
-  final String imageUrl;
-  final String day;
+  final MessagesModel messages;
 
   @override
   Widget build(BuildContext context) {
@@ -20,21 +16,36 @@ class CustomListTile extends StatelessWidget {
       leading: CircleAvatar(
         radius: 22,
         backgroundImage: NetworkImage(
-          imageUrl,
+          messages.image ?? '',
         ),
       ),
       title: Text(
-        title,
+        messages.userName ?? 'Mohamed Ahmed',
         style: const TextStyle(fontSize: 18),
       ),
       subtitle: Text(
-        subTitle,
+        messages.message ?? 'Hi',
         style: const TextStyle(fontSize: 16),
       ),
       trailing: Text(
-        day,
+        messages.time ?? 'Fri',
         style: const TextStyle(fontSize: 18),
       ),
     );
   }
 }
+
+
+
+//  Container(
+//         width: 50,
+//         height: 50,
+//         decoration: BoxDecoration(
+//           borderRadius: BorderRadius.circular(50),
+//         ),
+//         child: Image.network(
+//           messages.image ?? 'https://images.app.goo.gl/aLDodRouWGLaC3v8A',
+//           height: 50,
+//           width: 50,
+//           fit: BoxFit.fill,
+//         ),

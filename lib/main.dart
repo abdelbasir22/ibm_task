@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ibm_task/features/auth/presentation/manger/login_provider.dart';
 import 'package:ibm_task/features/auth/presentation/views/login_view.dart';
 import 'package:ibm_task/features/home/presentation/views/home_view.dart';
+import 'package:ibm_task/features/messages/presentation/manger/messages_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -11,6 +12,7 @@ void main() {
         ChangeNotifierProvider(
           create: (_) => AuthProvider(),
         ),
+        ChangeNotifierProvider(create: (_) => MessagesProvider()),
       ],
       child: const MyApp(),
     ),
