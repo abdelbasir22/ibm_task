@@ -12,6 +12,7 @@ class ExpansionTileWidget extends StatelessWidget {
     return ExpansionTile(
       tilePadding: const EdgeInsets.symmetric(vertical: 15),
       childrenPadding: const EdgeInsets.only(left: 55, bottom: 15),
+      shape: const RoundedRectangleBorder(side: BorderSide.none),
       leading: const CircleAvatar(
         radius: 30,
         backgroundImage: AssetImage(
