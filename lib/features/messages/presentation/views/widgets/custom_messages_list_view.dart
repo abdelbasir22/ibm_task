@@ -10,11 +10,16 @@ class CustomMessagesListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final messagesProvider = Provider.of<MessagesProvider>(context);
 
+    final messages = messagesProvider.searchResults.isEmpty &&
+            messagesProvider.messages.isNotEmpty
+        ? messagesProvider.messages
+        : messagesProvider.searchResults;
+
     return SliverList.builder(
-      itemCount: messagesProvider.messages.length,
+      itemCount: messages.length,
       itemBuilder: (context, index) {
         return CustomListTile(
-          messages: messagesProvider.messages[index],
+          messages: messages[index],
         );
       },
     );

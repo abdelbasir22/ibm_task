@@ -13,10 +13,10 @@ class CustomListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: CircleAvatar(
+      leading: const CircleAvatar(
         radius: 22,
-        backgroundImage: NetworkImage(
-          messages.image ?? '',
+        backgroundImage: AssetImage(
+          'assets/images/male.png',
         ),
       ),
       title: Text(

@@ -4,7 +4,6 @@ import 'package:ibm_task/features/auth/presentation/views/widget/custom_button.d
 import 'package:ibm_task/features/auth/presentation/views/widget/custom_social_media_row.dart';
 import 'package:ibm_task/features/auth/presentation/views/widget/custom_text_form_filed.dart';
 import 'package:ibm_task/features/auth/presentation/views/widget/app_logo.dart';
-import 'package:ibm_task/features/home/presentation/views/home_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../manger/login_provider.dart';
@@ -17,45 +16,14 @@ class LoginViewBody extends StatefulWidget {
 }
 
 class _LoginViewBodyState extends State<LoginViewBody> {
+  var formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  var formKey = GlobalKey<FormState>();
-
-  void _login() async {
-    final email = emailController.text;
-    final password = passwordController.text;
-
-    try {
-      await Provider.of<AuthProvider>(context, listen: false)
-          .login(email, password);
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const HomeView(),
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: AppColors.purple,
-            content: Text(
-              'Login failed: wrong email or password',
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.white),
-            ),
-          ),
-        );
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<AuthProvider>(context);
+
     return SafeArea(
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -140,9 +108,26 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                 loginProvider.isLoading
                     ? const CircularProgressIndicator()
                     : CustomButton(
-                        onTap: () {
+                        onTap: () async {
                           if (formKey.currentState!.validate()) {
-                            _login();
+                            try {
+                              await context.read<AuthProvider>().login(
+                                    emailController.text,
+                                    passwordController.text,
+                                  );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text('Login sucsses'),
+                                backgroundColor: AppColors.darkGreen,
+                              ));
+                            } catch (e) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text(
+                                    'Login failed: wrong email or password!'),
+                                backgroundColor: AppColors.red,
+                              ));
+                            }
                           }
                         },
                         text: 'LOGIN',

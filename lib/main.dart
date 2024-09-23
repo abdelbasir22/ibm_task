@@ -1,21 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:ibm_task/core/utils/app_routs.dart';
 import 'package:ibm_task/features/auth/presentation/manger/login_provider.dart';
-import 'package:ibm_task/features/auth/presentation/views/login_view.dart';
-import 'package:ibm_task/features/home/presentation/views/home_view.dart';
 import 'package:ibm_task/features/messages/presentation/manger/messages_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => AuthProvider(),
-        ),
-        ChangeNotifierProvider(create: (_) => MessagesProvider()),
-      ],
-      child: const MyApp(),
-    ),
+    const MyApp(),
   );
 }
 
@@ -24,23 +15,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(builder: (context, authProvider, child) {
-      return MaterialApp(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (_) => AuthProvider()..checkLoginStatus()),
+        ChangeNotifierProvider(create: (_) => MessagesProvider()),
+      ],
+      child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           useMaterial3: true,
         ),
-        home: FutureBuilder(
-          future: authProvider.checkLoginStatus(),
-          builder: (context, snapshot) {
-            if (authProvider.isLoggedIn) {
-              return const HomeView();
-            } else {
-              return const LoginView();
-            }
-          },
-        ),
-      );
-    });
+        routerConfig: AppRouter().router,
+      ),
+    );
   }
 }
