@@ -5,8 +5,10 @@ import 'package:ibm_task/features/calls/presentation/views/calls_view.dart';
 import 'package:ibm_task/features/groups/presentation/views/groups_view.dart';
 import 'package:ibm_task/features/home/presentation/views/widgets/custom_log_out_button.dart';
 import 'package:ibm_task/features/messages/presentation/views/messages_view.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/widgets/custom_search_bar.dart';
+import '../../../messages/presentation/manger/messages_provider.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({
@@ -15,74 +17,98 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 4,
-      child: Scaffold(
-        appBar: AppBar(
-          leading: const CircleAvatar(
-            radius: 20,
-            backgroundImage: AssetImage('assets/images/male.png'),
-          ),
-          title: const CustomSearchBar(),
-          actions: const [
-            CustomLogOutButton(),
-          ],
-          bottom: const TabBar(
-            indicatorColor: AppColors.blue,
-            labelColor: AppColors.blue,
-            tabs: [
-              Padding(
-                padding: EdgeInsets.only(bottom: 10),
-                child: Text(
-                  'Messages',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
+    final messagesProvider = Provider.of<MessagesProvider>(context);
+
+    return messagesProvider.hasError
+        ? Scaffold(
+            body: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/no_con.jpg',
                   ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  const Text(
+                    'No internet connection. Please check your connection.',
+                    style: TextStyle(fontSize: 20, color: AppColors.red),
+                  ),
+                ],
+              ),
+            ),
+          )
+        : DefaultTabController(
+            length: 4,
+            child: Scaffold(
+              appBar: AppBar(
+                leading: const CircleAvatar(
+                  radius: 20,
+                  backgroundImage: AssetImage('assets/images/male.png'),
+                ),
+                title: const CustomSearchBar(),
+                actions: const [
+                  CustomLogOutButton(),
+                ],
+                bottom: const TabBar(
+                  indicatorColor: AppColors.blue,
+                  labelColor: AppColors.blue,
+                  tabs: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        'Messages',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        'Active',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        'Groups',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        'Calls',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 10),
-                child: Text(
-                  'Active',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+              body: const TabBarView(
+                children: [
+                  MessagesView(),
+                  ActiveView(),
+                  GroupsView(),
+                  CallsView(),
+                ],
               ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 10),
-                child: Text(
-                  'Groups',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 10),
-                child: Text(
-                  'Calls',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        body: const TabBarView(
-          children: [
-            MessagesView(),
-            ActiveView(),
-            GroupsView(),
-            CallsView(),
-          ],
-        ),
-      ),
-    );
+            ),
+          );
   }
 }
