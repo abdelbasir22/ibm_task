@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ibm_task/core/utils/app_colors.dart';
+import 'package:ibm_task/features/auth/presentation/manger/auth_cubit/auth_cubit.dart';
 import 'package:ibm_task/features/auth/presentation/views/widget/custom_button.dart';
 import 'package:ibm_task/features/auth/presentation/views/widget/custom_social_media_row.dart';
 import 'package:ibm_task/features/auth/presentation/views/widget/custom_text_form_filed.dart';
 import 'package:ibm_task/features/auth/presentation/views/widget/app_logo.dart';
-import 'package:provider/provider.dart';
 
-import '../../manger/login_provider.dart';
+import '../../../../../core/utils/app_routs.dart';
 
 class LoginViewBody extends StatefulWidget {
   const LoginViewBody({super.key});
@@ -22,7 +24,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    final loginProvider = Provider.of<AuthProvider>(context);
+    // final loginProvider = Provider.of<AuthProvider>(context);
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -105,33 +107,38 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * .06,
                 ),
-                loginProvider.isLoading
-                    ? const CircularProgressIndicator()
-                    : CustomButton(
-                        onTap: () async {
-                          if (formKey.currentState!.validate()) {
-                            try {
-                              await context.read<AuthProvider>().login(
-                                    emailController.text,
-                                    passwordController.text,
-                                  );
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text('Login sucsses'),
-                                backgroundColor: AppColors.darkGreen,
-                              ));
-                            } catch (e) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text(
-                                    'Login failed: wrong email or password!'),
-                                backgroundColor: AppColors.red,
-                              ));
-                            }
-                          }
-                        },
-                        text: 'LOGIN',
-                      ),
+                BlocConsumer<AuthCubit, AuthState>(
+                  listener: (context, state) {
+                    if (state is AuthSuccess) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Login success'),
+                        backgroundColor: AppColors.darkGreen,
+                      ));
+                      context.go(AppRouter.homeRout);
+                    } else if (state is AuthFailure) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(state.message),
+                        backgroundColor: AppColors.red,
+                      ));
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is AuthLoading) {
+                      return const CircularProgressIndicator();
+                    }
+                    return CustomButton(
+                      onTap: () async {
+                        if (formKey.currentState!.validate()) {
+                          context.read<AuthCubit>().login(
+                                emailController.text,
+                                passwordController.text,
+                              );
+                        }
+                      },
+                      text: 'LOGIN',
+                    );
+                  },
+                ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * .06,
                 ),

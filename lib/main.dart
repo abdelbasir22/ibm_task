@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibm_task/core/utils/app_routs.dart';
-import 'package:ibm_task/features/auth/presentation/manger/login_provider.dart';
-import 'package:ibm_task/features/messages/presentation/manger/messages_provider.dart';
-import 'package:provider/provider.dart';
+
+import 'package:ibm_task/features/auth/presentation/manger/auth_cubit/auth_cubit.dart';
+import 'package:ibm_task/features/messages/presentation/manger/messages_cubit/messages_cubit.dart';
 
 void main() {
   runApp(
@@ -15,11 +16,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider(
-            create: (_) => AuthProvider()..checkLoginStatus()),
-        ChangeNotifierProvider(create: (_) => MessagesProvider()),
+        BlocProvider(create: (_) => AuthCubit()..checkLoginStatus()),
+        BlocProvider(create: (_) => MessagesCubit()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

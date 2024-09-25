@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibm_task/core/utils/app_colors.dart';
 import 'package:ibm_task/features/active/presentation/views/active_view.dart';
 import 'package:ibm_task/features/calls/presentation/views/calls_view.dart';
 import 'package:ibm_task/features/groups/presentation/views/groups_view.dart';
 import 'package:ibm_task/features/home/presentation/views/widgets/custom_log_out_button.dart';
+import 'package:ibm_task/features/messages/presentation/manger/messages_cubit/messages_cubit.dart';
 import 'package:ibm_task/features/messages/presentation/views/messages_view.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../core/widgets/custom_search_bar.dart';
-import '../../../messages/presentation/manger/messages_provider.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({
@@ -17,22 +17,18 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final messagesProvider = Provider.of<MessagesProvider>(context);
-
-    return messagesProvider.hasError
-        ? Scaffold(
+    return BlocBuilder<MessagesCubit, MessagesState>(
+      builder: (context, state) {
+        if (state is MessagesFaluier) {
+          return Scaffold(
             body: Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'assets/images/no_con.jpg',
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
+                  Image.asset('assets/images/no_con.jpg'),
+                  const SizedBox(height: 30),
                   const Text(
                     'No internet connection. Please check your connection.',
                     style: TextStyle(fontSize: 20, color: AppColors.red),
@@ -40,8 +36,9 @@ class HomeView extends StatelessWidget {
                 ],
               ),
             ),
-          )
-        : DefaultTabController(
+          );
+        } else {
+          return DefaultTabController(
             length: 4,
             child: Scaffold(
               appBar: AppBar(
@@ -110,5 +107,8 @@ class HomeView extends StatelessWidget {
               ),
             ),
           );
+        }
+      },
+    );
   }
 }

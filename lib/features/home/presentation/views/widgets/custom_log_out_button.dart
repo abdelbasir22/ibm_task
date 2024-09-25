@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:ibm_task/core/utils/app_routs.dart';
 
 import '../../../../../core/utils/app_colors.dart';
-import '../../../../auth/presentation/manger/login_provider.dart';
-import '../../../../auth/presentation/views/login_view.dart';
+import '../../../../auth/presentation/manger/auth_cubit/auth_cubit.dart';
 
 class CustomLogOutButton extends StatelessWidget {
   const CustomLogOutButton({
@@ -19,13 +20,8 @@ class CustomLogOutButton extends StatelessWidget {
         color: AppColors.darkBlueGray,
       ),
       onPressed: () async {
-        await Provider.of<AuthProvider>(context, listen: false).logout();
-
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const LoginView(),
-          ),
-        );
+        await context.read<AuthCubit>().logout();
+        context.go(AppRouter.loginRout);
       },
     );
   }

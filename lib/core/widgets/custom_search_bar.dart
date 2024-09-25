@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../features/messages/presentation/manger/messages_provider.dart';
+import '../../features/messages/presentation/manger/messages_cubit/messages_cubit.dart';
 import '../utils/app_colors.dart';
 
 class CustomSearchBar extends StatelessWidget {
@@ -9,9 +9,6 @@ class CustomSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final messagesProvider =
-        Provider.of<MessagesProvider>(context, listen: false);
-
     return Center(
       child: Container(
         height: 50,
@@ -21,7 +18,7 @@ class CustomSearchBar extends StatelessWidget {
         child: Center(
           child: TextField(
             onChanged: (query) {
-              messagesProvider.searchMessages(query);
+              BlocProvider.of<MessagesCubit>(context).searchMessages(query);
             },
             decoration: InputDecoration(
               hintText: 'Search ...',
