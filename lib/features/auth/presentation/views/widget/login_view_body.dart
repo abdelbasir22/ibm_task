@@ -82,7 +82,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                   obscureText: true,
                   validator: (String value) {
                     if (value.length < 5) {
-                      return '*Invaled Password';
+                      return '*Invalid Password';
                     } else {
                       return null;
                     }
@@ -115,7 +115,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                         backgroundColor: AppColors.darkGreen,
                       ));
                       context.go(AppRouter.homeRout);
-                    } else if (state is AuthFailure) {
+                    } else if (state is AuthFailuer) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(state.message),
                         backgroundColor: AppColors.red,

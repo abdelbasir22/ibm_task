@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:ibm_task/core/network/cache.dart';
 import 'package:meta/meta.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/login_model.dart';
 import '../login_api_service.dart';
@@ -17,29 +17,17 @@ class AuthCubit extends Cubit<AuthState> {
       final result = await LoginApiService().login(email, password);
       final user = UserModel.fromJson(result);
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('userToken', user.token);
+      await Cache.insertToCache(key: 'token', value: user.token);
 
       emit(AuthSuccess(user: user));
     } catch (e) {
-      emit(AuthFailure(message: 'Login failed: wrong email or password!'));
-    }
-  }
-
-  Future<void> checkLoginStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('userToken');
-
-    if (token != null) {
-      emit(AuthLoggedIn());
-    } else {
-      emit(AuthLoggedOut());
+      emit(AuthFailuer(message: 'Login failed: wrong email or password!'));
     }
   }
 
   Future<void> logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('userToken');
+    await Cache.deleteCacheItem(key: 'token');
+
     emit(AuthLoggedOut());
   }
 }

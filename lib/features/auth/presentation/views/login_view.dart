@@ -6,8 +6,11 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: LoginViewBody(),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: const Scaffold(
+        body: LoginViewBody(),
+      ),
     );
   }
 }
